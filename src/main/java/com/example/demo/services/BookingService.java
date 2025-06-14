@@ -68,7 +68,9 @@ public class BookingService {
     public String generatePnr() {
         String prefix = String.valueOf(System.currentTimeMillis()).substring(4, 10); // 6-digit
         int suffix = new Random().nextInt(9000) + 1000; // 4-digit
-        return prefix + suffix;
+        String pnr = prefix + suffix;
+        log.info("Generated PNR: {}", pnr);
+        return pnr;
     }
 
     public Optional<Booking> getByPnr(String pnr) {

@@ -15,12 +15,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "users")
 public class User {
 
+    public enum Role {
+        ROLE_USER,
+        ROLE_ADMIN
+    }
+
     @Id
     private String id;
 
     private String firstName;
     private String lastName;
     private String passWord;
+    private String role;
     private int age;
 
     @Indexed(unique = true)

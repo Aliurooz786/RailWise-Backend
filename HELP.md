@@ -1,24 +1,73 @@
-# Getting Started
+# 🚆 RailWise - Online Train Reservation System (Backend)
 
-### Reference Documentation
-For further reference, please consider the following sections:
+**RailWise** is a secure and feature-rich **online train reservation backend system** built with **Spring Boot** and **MongoDB**. It supports user and admin roles, JWT authentication, booking workflows, and role-based access control.
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/3.5.0/maven-plugin)
-* [Create an OCI image](https://docs.spring.io/spring-boot/3.5.0/maven-plugin/build-image.html)
-* [Spring Web](https://docs.spring.io/spring-boot/3.5.0/reference/web/servlet.html)
+---
 
-### Guides
-The following guides illustrate how to use some features concretely:
+## ✨ Features
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
+### 👤 User Module
+- Register with validation (password policy enforced)
+- Login with JWT authentication
+- View/update/delete user profile
+- View personal bookings
 
-### Maven Parent overrides
+### 🔐 Admin Module
+- Register admins (only accessible by admins)
+- View all users
+- Manage train data (Add, Update, Delete)
+- View all bookings
 
-Due to Maven's design, elements are inherited from the parent POM to the project POM.
-While most of the inheritance is fine, it also inherits unwanted elements like `<license>` and `<developers>` from the parent.
-To prevent this, the project POM contains empty overrides for these elements.
-If you manually switch to a different parent and actually want the inheritance, you need to remove those overrides.
+### 🚄 Train Module
+- Add new trains (admin only)
+- Search trains by source and destination
+- View all trains
 
+### 🎟️ Booking Module
+- Book ticket (with seat auto-assignment)
+- Cancel booking by PNR
+- View booking by:
+    - PNR
+    - Train ID
+    - User ID
+- View all bookings (admin only)
+
+---
+
+## 🔒 Security
+- **JWT Authentication** for all protected endpoints
+- **Role-based access** for user/admin features
+- Passwords securely hashed with **BCrypt**
+- Centralized **Global Exception Handling**
+- Logging with **SLF4J**
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer        | Technology       |
+|--------------|------------------|
+| Backend      | Java 17 + Spring Boot |
+| Database     | MongoDB          |
+| Security     | Spring Security + JWT |
+| Logging      | SLF4J + Logback  |
+| Build Tool   | Maven      |
+| Testing Tool | Postman / Swagger |
+
+---
+
+## 📂 Project Structure
+
+```
+com.urooz.railwise
+├── controller          # REST Controllers (UserController, AdminController, etc.)
+├── entity              # MongoDB document models (User, Train, Booking)
+├── repository          # MongoDB repositories (UserRepository, TrainRepository, etc.)
+├── service             # Business logic interfaces and implementations
+├── services.serviceImpl# Service implementation classes
+├── config              # Spring Security, MongoDB, and other config classes
+├── filter              # JWT authentication filter
+├── util                # Utility classes (e.g. JWT Util, Token Generator)
+├── exception           # Custom exceptions and global exception handlers
+└── DemoApplication.java # Main Spring Boot application runner
+```
