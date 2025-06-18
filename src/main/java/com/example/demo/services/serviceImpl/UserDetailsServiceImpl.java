@@ -26,13 +26,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<User> userOpt = userRepository.findByEmail(email);
 
         if (userOpt.isEmpty()) {
-            log.warn("❌ User not found with email: {}", email);
+            log.warn("User not found with email: {}", email);
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
 
         User user = userOpt.get();
-        log.info("✅ DB email: {}", user.getEmail());
-        log.debug("🔐 DB password (hashed): {}", user.getPassWord());
+        log.info("DB email: {}", user.getEmail());
+        log.debug("DB password (hashed): {}", user.getPassWord());
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
