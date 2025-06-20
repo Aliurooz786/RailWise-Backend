@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/trains/add", "/trains/number/**").hasRole("ADMIN")
                         .requestMatchers("/trains/**").authenticated()
                         .requestMatchers("/bookings/**").authenticated()
+                        .requestMatchers("/api/test-email").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

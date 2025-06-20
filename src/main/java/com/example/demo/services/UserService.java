@@ -122,12 +122,18 @@ public class UserService {
             }
         }
 
-        log.warn("❌ Invalid login attempt for email: {}", email);
+        log.warn("Invalid login attempt for email: {}", email);
         return "Invalid email or password!";
     }
 
     private boolean isValidPassword(String password) {
         String pattern = "^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$";
         return password.matches(pattern);
+    }
+
+    public User getUserById(String id) {
+        log.info("Fetching user by id: {}", id);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
     }
 }

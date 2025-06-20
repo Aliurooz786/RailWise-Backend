@@ -1,7 +1,10 @@
 package com.example.demo.services;
 
 import com.example.demo.entity.Booking;
+import com.example.demo.entity.Train;
+import com.example.demo.entity.User;
 import com.example.demo.repository.BookingRepository;
+import com.example.demo.services.utility.BookingEmailBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,12 @@ public class BookingService {
     @Autowired
     private TrainService trainService;
 
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private UserService userService;
+
     public Booking createBooking(Booking booking) {
         log.info("Booking request received for userId: {}, trainId: {}", booking.getUserId(), booking.getTrainId());
 
@@ -39,9 +48,21 @@ public class BookingService {
         booking.setStatus("CONFIRMED");
 
         Booking saved = bookingRepository.save(booking);
-
         log.info("Booking confirmed | PNR: {}, Seat: {}, Class: {}, Fare: {}",
                 saved.getPnr(), saved.getSeatNumber(), saved.getClassType(), saved.getFare());
+
+
+        User user = userService.getUserById(saved.getUserId());
+        Train train = trainService.getTrainById(saved.getTrainId());
+
+        try {
+            String subject = BookingEmailBuilder.buildSubject(saved.getPnr());
+            String body = BookingEmailBuilder.buildBody(saved, user, train);
+            emailService.sendBookingConfirmation(user.getEmail(), subject, body);
+            log.info("Booking confirmation email sent to: {}", user.getEmail());
+        } catch (Exception e) {
+            log.error("Failed to send booking email: {}", e.getMessage());
+        }
 
         return saved;
     }
@@ -58,6 +79,19 @@ public class BookingService {
             bookingRepository.delete(booking);
 
             log.info("Booking cancelled successfully for PNR: {}", pnr);
+
+            try {
+                User user = userService.getUserById(booking.getUserId());
+                Train train = trainService.getTrainById(booking.getTrainId());
+
+                String subject = BookingEmailBuilder.buildCancellationSubject(pnr);
+                String body = BookingEmailBuilder.buildCancellationBody(booking, user, train);
+
+                emailService.sendBookingConfirmation(user.getEmail(), subject, body);
+                log.info("Cancellation email sent to: {}", user.getEmail());
+            } catch (Exception e) {
+                log.error("Failed to send cancellation email: {}", e.getMessage());
+            }
             return true;
         }
 

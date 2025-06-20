@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.entity.Train;
+import com.example.demo.entity.User;
 import com.example.demo.repository.TrainRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,5 +88,11 @@ public class TrainService {
         trainRepository.save(train);
 
         log.info("Seat released for trainId {}, Booked now: {}", trainId, train.getBookedSeats());
+    }
+
+    public Train getTrainById(String id) {
+        log.info("Fetching train by id: {}", id);
+        return trainRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Train not found with ID: " + id));
     }
 }
