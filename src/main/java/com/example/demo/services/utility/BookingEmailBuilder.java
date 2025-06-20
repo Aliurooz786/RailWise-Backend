@@ -12,6 +12,9 @@ public class BookingEmailBuilder {
     public static String buildCancellationSubject(String pnr) {
         return "RailWise | Ticket Cancellation Confirmation - PNR: " + pnr;
     }
+    public static String buildWelcomeSubject(String firstName) {
+        return "Welcome to RailWise, " + firstName + "!";
+    }
 
     public static String buildBody(Booking booking, User user, Train train) {
         String fullName = user.getFirstName() + " " + user.getLastName();
@@ -78,6 +81,30 @@ public class BookingEmailBuilder {
                 booking.getSeatNumber(), booking.getClassType(),
                 train.getFromStation(), train.getToStation(),
                 booking.getFare()
+        );
+    }
+
+
+    public static String buildWelcomeBody(User user) {
+        return String.format("""
+            Dear %s %s,
+
+            Welcome to RailWise!
+
+            We're really happy to have you with us. Your account has been successfully created, and you're now ready to explore train schedules, book tickets with ease, and manage your journeys all in one place.
+            
+            We’re here to make train travel simpler, smoother, and stress-free — just the way it should be.
+           
+            If you have any questions or need help, feel free to reach out at a.aliurooz786@gmail.com. We’ll be happy to assist you.
+           
+            Wishing you safe and pleasant journeys ahead!
+         
+
+            Regards,
+            RailWise Team
+            """,
+                user.getFirstName(),
+                user.getLastName()
         );
     }
 }

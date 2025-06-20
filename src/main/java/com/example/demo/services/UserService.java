@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.services.utility.BookingEmailBuilder;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private EmailService emailService;
 
     public void saveUser(User user){
         log.info("Saving user with email: {}", user.getEmail());
@@ -86,6 +89,16 @@ public class UserService {
         log.info("Plain password: {}", rawPassword);
         log.info("Encoded password: {}", encodedPassword);
         log.info("User registered successfully: {}", user.getEmail());
+
+
+        try {
+            String subject = BookingEmailBuilder.buildWelcomeSubject(user.getFirstName());
+            String body = BookingEmailBuilder.buildWelcomeBody(user);
+            emailService.sendBookingConfirmation(user.getEmail(), subject, body);
+            log.info("Welcome email sent to: {}", user.getEmail());
+        } catch (Exception e) {
+            log.error("Failed to send welcome email: {}", e.getMessage());
+        }
 
         return "User registered successfully!";
     }
