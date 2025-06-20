@@ -5,6 +5,7 @@ import com.example.demo.entity.Train;
 import com.example.demo.entity.User;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.services.utility.BookingEmailBuilder;
+import com.example.demo.util.TicketPdfGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,10 +59,20 @@ public class BookingService {
         try {
             String subject = BookingEmailBuilder.buildSubject(saved.getPnr());
             String body = BookingEmailBuilder.buildBody(saved, user, train);
-            emailService.sendBookingConfirmation(user.getEmail(), subject, body);
-            log.info("Booking confirmation email sent to: {}", user.getEmail());
+
+            byte[] pdf = TicketPdfGenerator.generateTicketPdf(saved, user, train);
+
+            emailService.sendEmailWithAttachment(
+                    user.getEmail(),
+                    subject,
+                    body,
+                    pdf,
+                    "Ticket-" + saved.getPnr() + ".pdf"
+            );
+
+            log.info("Booking confirmation email with PDF sent to: {}", user.getEmail());
         } catch (Exception e) {
-            log.error("Failed to send booking email: {}", e.getMessage());
+            log.error("Failed to send booking email with PDF: {}", e.getMessage());
         }
 
         return saved;
