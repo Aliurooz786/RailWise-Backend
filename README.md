@@ -1,78 +1,76 @@
 # RailWise-Backend
-# 🚆 RailWise - Online Train Reservation System (Backend)
 
-**RailWise** is a secure and feature-rich **online train reservation backend system** built with **Spring Boot** and **MongoDB**. It supports user and admin roles, JWT authentication, booking workflows, and role-based access control.
+**RailWise** is a full-featured backend system for an online train reservation platform. It is built using Spring Boot and MongoDB, and is designed with security, performance, and extensibility in mind.
+
+The system supports user and admin roles, secure authentication using JWT, automatic seat assignment, email notifications, and daily scheduled tasks.
 
 ---
 
-## ✨ Features
+## Features
 
-### 👤 User Module
-- Register with validation (password policy enforced)
-- Login with JWT authentication
-- View/update/delete user profile
+### User Module
+- Register and login with validation
+- Secure authentication using JWT
+- Manage personal profile
 - View personal bookings
+- Receive confirmation and cancellation emails with PDF ticket attachment
 
-### 🔐 Admin Module
-- Register admins (only accessible by admins)
-- View all users
-- Manage train data (Add, Update, Delete)
-- View all bookings
+### Admin Module
+- Admin registration (admin-only)
+- Manage train records (add, update, delete)
+- View all users and their bookings
 
-### 🚄 Train Module
-- Add new trains (admin only)
-- Search trains by source and destination
-- View all trains
+### Train Module
+- Add and manage trains
+- Search for trains by source and destination
+- View train schedule, fare, and seat availability
 
-### 🎟️ Booking Module
-- Book ticket (with seat auto-assignment)
-- Cancel booking by PNR
-- View booking by:
-    - PNR
-    - Train ID
-    - User ID
-- View all bookings (admin only)
+### Booking Module
+- Book tickets with automatic seat assignment
+- Generate unique PNR and booking timestamps
+- Cancel bookings by PNR
+- View booking details by PNR, user, or train
+- Send PDF tickets via email on booking
+- Send cancellation confirmation via email
 
----
-
-## 🔒 Security
-- **JWT Authentication** for all protected endpoints
-- **Role-based access** for user/admin features
-- Passwords securely hashed with **BCrypt**
-- Centralized **Global Exception Handling**
-- Logging with **SLF4J**
+### Email and CRON Features
+- SMTP email integration (Gmail)
+- Send:
+  - Booking confirmation emails with PDF tickets
+  - Cancellation emails
+  - Welcome emails on registration
+- Scheduled task (CRON) to send a daily morning message to all users at 7:00 AM
 
 ---
 
-## 🛠️ Tech Stack
+## Security
 
-| Layer        | Technology       |
-|--------------|------------------|
-| Backend      | Java 17 + Spring Boot |
-| Database     | MongoDB          |
-| Security     | Spring Security + JWT |
-| Logging      | SLF4J + Logback  |
-| Build Tool   | Maven      |
-| Testing Tool | Postman / Swagger |
+- JWT-based authentication and authorization
+- Role-based access control (User/Admin)
+- BCrypt hashing for passwords
+- Global exception handling for API errors
+- Logging of all critical actions (booking, email, authentication, etc.)
 
 ---
 
-## 📂 Project Structure
+## Technology Stack
 
-```
-com.urooz.railwise
-├── controller          # REST Controllers (UserController, AdminController, etc.)
-├── entity              # MongoDB document models (User, Train, Booking)
-├── repository          # MongoDB repositories (UserRepository, TrainRepository, etc.)
-├── service             # Business logic interfaces and implementations
-├── services.serviceImpl# Service implementation classes
-├── config              # Spring Security, MongoDB, and other config classes
-├── filter              # JWT authentication filter
-├── util                # Utility classes (e.g. JWT Util, Token Generator)
-├── exception           # Custom exceptions and global exception handlers
-└── DemoApplication.java # Main Spring Boot application runner
-```
+| Layer         | Technology         |
+|---------------|--------------------|
+| Language      | Java 17            |
+| Framework     | Spring Boot        |
+| Database      | MongoDB            |
+| Security      | Spring Security + JWT |
+| Email         | Spring Mail (SMTP) |
+| PDF           | OpenPDF            |
+| Scheduling    | Spring Scheduler (CRON) |
+| Logging       | SLF4J + Logback    |
+| Build Tool    | Maven              |
+| API Testing   | Postman / Swagger UI |
 
-#ScreenShots
+---
+
+## Screenshots
+
 
 
